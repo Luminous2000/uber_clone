@@ -18,7 +18,6 @@ Creates a new user account in the system and returns an authentication token.
   "password": string       // required, min 6 characters
 }
 #### Headers
-Content-Type: application/json
 
 #### Success Response
 
@@ -89,3 +88,81 @@ curl -X POST http://localhost:3000/users/register \
     -`email` (string): User's email address (must be valid email),
     -`password` (string): User's password (minimum 6 character),
 - `token` (string): JWT Token
+
+### Login User
+Authenticates a user and returns a JWT token.
+
+#### Endpoint
+
+#### Request Body
+```json
+{
+  "email": "string",     // required
+  "password": "string"   // required, min 6 characters
+}
+```
+#### Headers
+Content-Type: application/json
+
+Success Response
+Code: 200 OK
+
+#### Success Response
+  "token": "jwt_token_string",
+  "user": {
+    "fullname": {
+      "firstname": "string",
+      "lastname": "string"
+    },
+    "email": "string",
+    "_id": "string"
+  }
+}
+
+#### Error Response
+Code: 400 BAD REQUEST
+{
+  "errors": [
+    {
+      "msg": "Invalid Email",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+
+Code: 401 UNAUTHORIZED
+{
+  "message": "Invalid email or password"
+}
+
+#### Validation Rules
+- Email must be valid
+- Password must be at least 6 characters long
+#### Example Request
+
+curl -X POST http://localhost:3000/users/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john.doe@example.com",
+    "password": "password123"
+  }'
+  '
+
+#### Authentication Flow
+User submits email and password
+System validates input format
+System checks if email exists
+System verifies password using bcrypt
+On success, returns JWT token and user data
+
+### Example Response
+
+-`user` (object):
+    -`fullname` (object),
+     -`firstname` (string): User's first name (minmum 3 character),
+     -`lastname` (string): User's last name (minimum 3 character),
+    -`email` (string): User's email address (must be valid email),
+    -`password` (string): User's password (minimum 6 character),
+- `token` (string): JWT Token
+
