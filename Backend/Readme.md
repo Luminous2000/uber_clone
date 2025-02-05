@@ -166,3 +166,96 @@ On success, returns JWT token and user data
     -`password` (string): User's password (minimum 6 character),
 - `token` (string): JWT Token
 
+
+
+Document GET /users/profile endpoint
+
+Add authentication requirement
+Describe response format
+Add example request with token
+### Logout User
+Logs out the user by clearing the token cookie and blacklisting the current token.
+
+#### Endpoint
+GET /users/logout
+
+#### Headers
+Authorization: Bearer <jwt_token>
+
+#### Success Response
+**Code**: 200 OK
+
+
+Add authentication requirement
+Describe cookie clearing
+Document token blacklisting
+Add example request
+
+### Get User Profile
+Returns the authenticated user's profile information.
+
+#### Endpoint
+
+GET /users/profile
+
+
+#### Headers
+Authorization: Bearer <jwt_token>
+
+
+#### Success Response
+**Code**: 200 OK
+```json
+{
+  "fullname": {
+    "firstname": "string",
+    "lastname": "string"
+  },
+  "email": "string",
+  "_id": "string"
+}
+
+Error Response
+Code: 401 UNAUTHORIZED
+
+{
+  "message": "Unauthorized"
+}
+
+Example Request
+curl -X GET http://localhost:3000/users/profile \
+  -H "Authorization: Bearer your_jwt_token"
+
+Logout User
+Logs out the user by clearing the token cookie and blacklisting the current token.
+
+Endpoint
+GET /users/logout
+
+Headers
+
+Authorization: Bearer <jwt_token>
+
+Success Response
+Code: 200 OK
+
+{
+  "message": "Logged out successfully"
+}
+
+Error Response
+Code: 401 UNAUTHORIZED
+
+{
+  "message": "Unauthorized"
+}
+
+Security Features
+Clears authentication cookie
+Blacklists the JWT token
+Requires valid authentication
+
+Example Request
+
+curl -X GET http://localhost:3000/users/logout \
+  -H "Authorization: Bearer your_jwt_token"
