@@ -348,3 +348,117 @@ curl -X POST http://localhost:3000/captains/register \
     }
   }'
 
+
+## Captain Routes
+
+### Register Captain
+`POST /captains/register`
+
+#### Request Body
+```json
+{
+  "fullname": {
+    "firstname": string,    // required, min 3 chars
+    "lastname": string      // optional, min 3 chars
+  },
+  "email": string,         // required, unique, valid email format
+  "password": string,      // required, min 6 chars
+  "vehicle": {
+    "color": string,       // required, min 3 chars
+    "plate": string,       // required, min 3 chars, unique
+    "capacity": number,    // required, numeric value
+    "vehicleType": string  // required, enum: ["car", "motorcycle", "auto"]
+  }
+}
+
+##Success Response (201 Created)
+{
+  "token": "jwt_token_string",
+  "captain": {
+    "_id": "string",
+    "fullname": {
+      "firstname": "string",
+      "lastname": "string"
+    },
+    "email": "string",
+    "vehicle": {
+      "color": "string",
+      "plate": "string",
+      "capacity": number,
+      "vehicleType": "string"
+    }
+  }
+}
+
+## Login Captain
+POST /captains/login
+
+Request Body{
+  "email": string,    // required, valid email
+  "password": string  // required, min 6 chars
+}
+
+## Success Response (200 OK)
+
+{
+  "token": "jwt_token_string",
+  "captain": {
+    // same as register response
+  }
+}
+
+## Get Captain Profile
+GET /captains/profile
+
+Headers
+
+Authorization: Bearer <jwt_token>  // required
+
+## Success Response (200 OK)
+
+{
+  "captain": {
+    // same as register response without token
+  }
+}
+
+## Logout Captain
+GET /captains/logout
+
+Headers
+
+Authorization: Bearer <jwt_token>  // required
+
+##Success Response (200 OK)
+{
+  "message": "Logout successfully"
+}
+
+##Error Responses
+Validation Error (400)
+
+{
+  "errors": [
+    {
+      "msg": "Error message",
+      "param": "field_name",
+      "location": "body"
+    }
+  ]
+}
+
+##Authentication Error (401)
+{
+  "message": "Unauthorized"
+}
+
+##Conflict Error (400)
+{
+  "message": "Captain already exist"
+}
+
+##Security Features
+Password hashing using bcrypt
+JWT authentication
+Token blacklisting on logout
+Cookie-based token storage
