@@ -104,8 +104,8 @@ Authenticates a user and returns a JWT token.
 #### Headers
 Content-Type: application/json
 
-Success Response
-Code: 200 OK
+#### Success Response
+**Code**: 200 OK
 
 #### Success Response
   "token": "jwt_token_string",
@@ -215,8 +215,8 @@ Authorization: Bearer <jwt_token>
   "_id": "string"
 }
 
-Error Response
-Code: 401 UNAUTHORIZED
+#### Error Response
+**Code**: 401 UNAUTHORIZED
 
 {
   "message": "Unauthorized"
@@ -255,7 +255,96 @@ Clears authentication cookie
 Blacklists the JWT token
 Requires valid authentication
 
-Example Request
+#### Example Request
 
 curl -X GET http://localhost:3000/users/logout \
   -H "Authorization: Bearer your_jwt_token"
+
+    # Captain Endpoints
+  
+  ### Register Captain
+  Creates a new captain account with vehicle details.
+  
+  #### Endpoint
+
+  POST /captains/register
+    
+  #### Request Body
+  ```json
+  {
+    "fullname": {
+      "firstname": string,    // required, min 3 characters
+      "lastname": string      // optional, min 3 characters if provided
+    },
+    "email": string,         // required, must be unique
+    "password": string,      // required, min 6 characters
+    "vehicle": {
+      "color": string,       // required, min 3 characters
+      "plate": string,       // required, min 3 characters
+      "capacity": number,    // required, numeric
+      "vehicleType": string  // required, enum: ['car','motorcycle','auto']
+    }
+  }
+
+#### Validation Rules
+- Email must be valid and unique
+- Firstname must be at least 3 characters long
+- Password must be at least 6 characters long
+- Vehicle color must be at least 3 characters
+- Vehicle plate must be at least 3 characters
+- Vehicle capacity must be numeric
+- Vehicle type must be one of: car, motorcycle, auto
+
+#### Success Response
+**Code**: 201 CREATED
+
+{
+  "token": "jwt_token_string",
+  "captain": {
+    "fullname": {
+      "firstname": "string",
+      "lastname": "string"
+    },
+    "email": "string",
+    "vehicle": {
+      "color": "string",
+      "plate": "string",
+      "capacity": number,
+      "vehicleType": "string"
+    },
+    "_id": "string"
+  }
+}
+
+#### Error Response
+**Code**: 400 BAD REQUEST
+
+{
+  "errors": [
+    {
+      "msg": "Invalid vehicle type",
+      "param": "vehicle.vehicleType",
+      "location": "body"
+    }
+  ]
+}
+
+Example Request
+
+curl -X POST http://localhost:3000/captains/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.driver@example.com",
+    "password": "password123",
+    "vehicle": {
+      "color": "Black",
+      "plate": "DL1RTA3123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }'
+
