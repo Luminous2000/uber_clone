@@ -1,14 +1,18 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import React, { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import FinishRide from '../components/FinishRide'
+import LiveTracking from '../components/LiveTracking'
 
 const CaptainRiding = (props) => {
 
     const [finishRidePanel, setFinishRidePanel] = useState(false)
 
     const finishRidePanelRef = useRef(null)
+    const location = useLocation()
+    const rideData = location.state?.ride 
+    
 
     useGSAP(
         function () {
@@ -26,7 +30,7 @@ const CaptainRiding = (props) => {
       );
     
   return (
-    <div className="h-screen relative">
+    <div className="h-screen relative flex flex-col justify-end">
         
       <div className="fixed w-screen p-6 top-0 flex items-center justify-between ">
         <img
@@ -41,14 +45,8 @@ const CaptainRiding = (props) => {
           <i className="text-lg font-medium ri-logout-box-r-line"></i>
         </Link>
       </div>
-
-      <div className="h-4/5 ">
-        <img
-          className="h-full w-full object-cover "
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt="map-gif"
-        />
-      </div>
+ 
+      
 
       <div onClick={()=>{
         setFinishRidePanel(true)
@@ -77,9 +75,19 @@ const CaptainRiding = (props) => {
       </div>
       <div
         ref={finishRidePanelRef}
-        className="fixed h-screen w-full z-10 bottom-0 translate-y-full  px-3 py-6 pt-12 bg-white"
+        className="fixed h-screen w-full z-[500] bottom-0 translate-y-full  px-3 py-10 pt-12 bg-white"
       >
-        <FinishRide setFinishRidePanel={setFinishRidePanel} />
+        <FinishRide rideData={rideData}
+         setFinishRidePanel={setFinishRidePanel} />
+      </div>
+      <div className="h-screen fixed w-screen top-0 z-[-1]  ">
+        {/* <img
+          className="h-full w-full object-cover "
+          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
+          alt="map-gif"
+        /> */}
+        <LiveTracking/> 
+        
       </div>
       
     </div>

@@ -1,12 +1,13 @@
 import React from 'react'
 
 const WaitingForDriver = (props) => {
+  // console.log(props.ride?.captain)
   return (
     <div>
       <h5
         className="p-4 text-center absolute top-0 w-[93%] "
         onClick={() => {
-          props.WaitingForDriver(false);
+          props.setWaitingForDriver(false);
         }}
       >
         <i className=" text-3xl text-gray-200 ri-arrow-down-wide-line"></i>
@@ -18,9 +19,10 @@ const WaitingForDriver = (props) => {
           alt="uber_car"
         />
         <div className='text-right'>
-          <h2 className='text-lg font-medium'>Sarthak</h2>
-          <h4 className='text-xl font-semibold -mt-1 mb-1'>MP04AB1234</h4>
+          <h2 className='text-lg font-medium capitalize'>{props.ride?.captain.fullname.firstname+" "+props.ride?.captain.fullname.lastname}</h2>
+          <h4 className='text-xl font-semibold -mt-1 mb-1'>{props.ride?.captain.vehicle.plate}</h4>
           <p className='text-sm text-gray-600'>Maruti Suzuki Alto</p>
+          <h1 className='text-sm  font-semibold text-gray-600'>OTP - {props.ride?.otp}</h1>
         </div>
 
       </div>
@@ -33,7 +35,7 @@ const WaitingForDriver = (props) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm text-gray-500 -mt-1">
-                Kankariya Talab, Bhopal
+                {props.ride?.pickup}
               </p>
             </div>
           </div>
@@ -42,14 +44,14 @@ const WaitingForDriver = (props) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm text-gray-500 -mt-1">
-                Kankariya Talab, Bhopal
+              {props.ride?.destination}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-5 p-3 ">
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className="text-lg font-medium">₹193.20</h3>
+              <h3 className="text-lg font-medium">₹{props.ride?.fare}</h3>
               <p className="text-sm text-gray-500 -mt-1">Cash cash</p>
             </div>
           </div>

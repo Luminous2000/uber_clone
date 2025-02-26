@@ -1,4 +1,5 @@
 const axios = require("axios");
+const captainModel = require("../models/captain.model");
 module.exports.getAddressCoordinate = async (address) => {
   const apiKey = process.env.GOOGLE_MAPS_API;
   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
@@ -17,7 +18,7 @@ module.exports.getAddressCoordinate = async (address) => {
       throw new Error("Unable to fetch coordinates");
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     throw error;
   }
 };
@@ -49,7 +50,7 @@ module.exports.getDistanceTime = async (origin, destination) => {
       throw new Error(`Distance Matrix API Error: ${data.rows[0].elements[0].status}`); // More specific error
     }
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     throw err;
   }
 };
@@ -66,14 +67,26 @@ module.exports.getAutoCompeleteSuggestions = async (input) => {
 
   try {
     const response = await axios.get(url);
-    console.log(response);
+    // console.log(response);
     if (response.data.status === "OK") {
       return response.data.predictions;
     } else {
       throw new Error("Unable to fetch suggestions");
     }
   } catch (err) {
-    console.error(err);
+    // console.error(err);
     throw err;
   }
 };
+module.exports.getCaptainInTheRadius = async (ltd,lng,radius)=>{
+  // radius in KM
+  
+const captains = await captainModel.find({
+  location:{
+    $geoWithin:{
+      $centerSphere:[[ltd,lng],radius / 6371]
+    }
+  }
+})
+return captains;
+}

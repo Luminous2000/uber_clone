@@ -1,7 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { SocketContext } from "../context/SocketContext";
+import LiveTracking from "../components/LiveTracking";
 
 const Riding = () => {
+
+  const location = useLocation();
+  const {ride} = location.state || {}
+  const {socket} = useContext(SocketContext)
+  const navigate = useNavigate();
+  
+  socket.on("ride-ended",()=>{
+    navigate('/home')
+  })
+
+console.log(ride)
+
+
+  
   return (
     <div className="h-screen">
         <Link to='/home'  className="fixed h-10 w-10 right-2 top-2  bg-white flex items-center justify-center rounded-full">
@@ -9,11 +25,12 @@ const Riding = () => {
         </Link>
         
       <div className="h-1/2 ">
-        <img
+        {/* <img
           className="h-full w-full object-cover "
           src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
           alt="map-gif"
-        />
+        /> */}
+        <LiveTracking/>
       </div>
 
       <div className="h-1/2">
@@ -24,9 +41,9 @@ const Riding = () => {
             alt="uber_car"
           />
           <div className="text-right">
-            <h2 className="text-lg font-medium">Sarthak</h2>
-            <h4 className="text-xl font-semibold -mt-1 mb-1">MP04AB1234</h4>
-            <p className="text-sm text-gray-600">Maruti Suzuki Alto</p>
+            <h2 className="text-lg capitalize font-medium">{ride.captain.fullname.firstname+" "+ride.captain.fullname.firstname}</h2>
+            <h4 className="text-xl font-semibold  capitalize -mt-1 mb-1">{ride.captain.vehicle.plate}</h4>
+            <p className="text-sm capitalize text-gray-600">Maruti Suzuki Alto</p>
           </div>
         </div>
 
@@ -37,20 +54,21 @@ const Riding = () => {
               <i className="text-lg ri-map-pin-2-fill"></i>
               <div>
                 <h3 className="text-lg font-medium">562/11-A</h3>
-                <p className="text-sm text-gray-500 -mt-1">
-                  Kankariya Talab, Bhopal
+                <p className="text-sm capitalize text-gray-500 -mt-1">
+                {ride.destination}
                 </p>
               </div>
             </div>
             <div className="flex items-center gap-5 p-3 ">
               <i className="text-lg ri-currency-line"></i>
               <div>
-                <h3 className="text-lg font-medium">₹193.20</h3>
+                <h3 className="text-lg font-medium">₹{ride.fare}</h3>
                 <p className="text-sm text-gray-500 -mt-1">Cash cash</p>
               </div>
             </div>
           </div>
         </div>
+        
         <button className="w-full mt-5 bg-green-700 text-white font-semibold p-2 rounded-lg ">Make a Payment</button>
       </div>
     </div>
