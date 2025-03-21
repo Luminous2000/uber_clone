@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { UserDataContext } from "../context/UserContext";
-
+import { UserDataContext } from "../context/UserContext.jsx";
 
 const UserSignup = () => {
   const [email, setEmail] = useState("");
@@ -33,10 +32,10 @@ const UserSignup = () => {
     );
 
     if (response.status === 201) {
-      const data = response.data; 
+      const data = response.data;
       setUser(data.user);
-      
-      localStorage.setItem('token',data.token)
+
+      localStorage.setItem("token", data.token);
       navigate("/home");
     }
     setFirstname("");
