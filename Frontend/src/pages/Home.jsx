@@ -9,7 +9,7 @@ import WaitingForDriver from "../components/WaitingForDriver";
 import LookingForDriver from "../components/LookingForDriver";
 import axios from "axios";
 import { SocketContext } from "../context/SocketContext";
-import UserContext, { UserDataContext } from "../context/userContext";
+import UserContext, { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import LiveTracking from "../components/LiveTracking";
 
